@@ -21,6 +21,9 @@ export default defineConfig({
     }
   },
   
+  // Copia arquivos públicos para o build
+  publicDir: 'public',
+  
   // Base path (para GitHub Pages)
   // Use '/' se configurar custom domain ou 'source: GitHub Actions'
   // Use '/nome-repo/' se usar 'source: Deploy from branch'
