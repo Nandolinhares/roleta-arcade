@@ -83,7 +83,7 @@ export class UIManager {
         this.nameList.innerHTML = this.participants.map(p => `
             <div class="flex items-center justify-between bg-slate-900/60 p-4 rounded-xl border border-slate-800 hover:border-cyan-400/50 transition-all group">
                 <span class="font-bold text-slate-200 group-hover:text-cyan-300 transition-colors truncate pr-4 text-lg mono uppercase tracking-tighter">${p.name}</span>
-                <button onclick="window.app.removeParticipant('${p.id}')" class="text-slate-500 hover:text-red-400 p-2 transition-all">
+                <button onclick="removeParticipant('${p.id}')" class="text-slate-500 hover:text-red-400 p-2 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 6L6 18M6 6l12 12"/>
                     </svg>
