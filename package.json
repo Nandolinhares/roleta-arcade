@@ -1,6 +1,6 @@
 {
   "name": "roleta-arcade",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Aplicação de sorteio em estilo arcade com roleta giratória",
   "type": "module",
   "scripts": {
