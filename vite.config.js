@@ -21,6 +21,8 @@ export default defineConfig({
     }
   },
   
-  // Base path (para GitHub Pages ou similar)
-  base: './'
+  // Base path (para GitHub Pages)
+  // Use '/' se configurar custom domain ou 'source: GitHub Actions'
+  // Use '/nome-repo/' se usar 'source: Deploy from branch'
+  base: process.env.GITHUB_ACTIONS ? '/roleta-arcade/' : '/'
 })
