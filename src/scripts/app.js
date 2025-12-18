@@ -55,17 +55,21 @@ class RoletaApp {
     _setupEventListeners() {
         // Formulário de adicionar nomes
         this.uiManager.nameForm.addEventListener('submit', (e) => {
+            console.log('📋 Form submit event triggered');
             e.preventDefault();
-            e.stopPropagation();
             this._activateAudio();
             const rawValue = this.uiManager.nameInput.value;
             
-            if (!rawValue || this.wheelManager.getIsSpinning()) return false;
+            console.log('📝 Valor do input:', rawValue);
+            
+            if (!rawValue || this.wheelManager.getIsSpinning()) {
+                console.warn('Cancelado: sem valor ou está girando');
+                return;
+            }
 
             this.uiManager.addParticipants(rawValue);
             this.uiManager.clearInput();
             this.wheelManager.draw(this.uiManager.getParticipants());
-            return false;
         }, { signal: this.signal });
 
         // Botão de girar

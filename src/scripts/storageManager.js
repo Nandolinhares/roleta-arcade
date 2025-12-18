@@ -15,21 +15,39 @@ export class StorageManager {
         const namesString = participants.map(p => p.name).join(',');
         
         // Salva no localStorage
-        localStorage.setItem(this.storageKey, namesString);
-        
-        // Atualiza a URL
         try {
-            const url = new URL(window.location);
+            localStorage.setItem(this.storageKey, namesString);
+            console.log('💾 Salvo no localStorage:', namesString);
+        } catch (e) {
+            console.error('Erro ao salvar no localStorage:', e);
+        }
+        
+        // Atualiza a URL de forma segura
+        try {
+            if (!window.history || !window.history.replaceState) {
+                console.warn('History API não disponível');
+                return;
+            }
+
+            const currentUrl = window.location.href;
+            const url = new URL(currentUrl);
+            
             if (participants.length > 0) {
                 url.searchParams.set('lista', namesString);
             } else {
                 url.searchParams.delete('lista');
             }
-            if (window.location.protocol !== 'blob:' && window.history.replaceState) {
-                window.history.replaceState({}, '', url);
+            
+            const newUrl = url.toString();
+            
+            // Só atualiza se a URL for diferente
+            if (currentUrl !== newUrl) {
+                window.history.replaceState({}, '', newUrl);
+                console.log('🔗 URL atualizada:', newUrl);
             }
         } catch (e) {
-            console.warn('Erro ao atualizar URL:', e);
+            console.warn('Não foi possível atualizar URL:', e);
+            // Não é erro crítico, a aplicação continua funcionando
         }
     }
 

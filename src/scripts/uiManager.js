@@ -40,13 +40,23 @@ export class UIManager {
      * @param {string} rawValue - Texto com nomes (um por linha)
      */
     addParticipants(rawValue) {
-        if (!rawValue) return;
+        console.log('➕ addParticipants chamado com:', rawValue);
+        
+        if (!rawValue) {
+            console.warn('rawValue vazio');
+            return;
+        }
 
         const lines = rawValue.split('\n')
             .map(n => n.trim())
             .filter(n => n !== '');
 
-        if (lines.length === 0) return;
+        console.log('📝 Linhas processadas:', lines);
+
+        if (lines.length === 0) {
+            console.warn('Nenhuma linha válida encontrada');
+            return;
+        }
 
         lines.forEach(name => {
             this.participants.push({ 
@@ -55,6 +65,7 @@ export class UIManager {
             });
         });
 
+        console.log('👥 Total de participantes:', this.participants.length);
         this.storageManager.saveState(this.participants);
         this.render();
     }
