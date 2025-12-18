@@ -1,0 +1,24 @@
+{
+  "name": "roleta-arcade",
+  "version": "1.0.0",
+  "description": "Aplicação de sorteio em estilo arcade com roleta giratória",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "roleta",
+    "sorteio",
+    "arcade",
+    "wheel",
+    "random"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.19"
+}
