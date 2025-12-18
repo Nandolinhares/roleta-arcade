@@ -81,11 +81,16 @@ class RoletaApp {
 
             this.uiManager.updateSpinButton(true);
             
+            // Narrador fala no início do sorteio
+            this.audioManager.playNarrator();
+            
             this.wheelManager.spin(
                 this.uiManager.getParticipants(),
                 (winner) => {
                     this.uiManager.showWinner(winner.name);
                     this.uiManager.updateSpinButton(false);
+                    // Narrador anuncia o vencedor
+                    this.audioManager.announceWinner(winner.name);
                 }
             );
         }, { signal: this.signal });

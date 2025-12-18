@@ -6,7 +6,26 @@ export class AudioManager {
     constructor() {
         this.audioEnabled = true;
         this.audioCtx = null;
+        this.speechSynth = window.speechSynthesis;
+        this.voicesLoaded = false;
         this._initAudioContext();
+        this._loadVoices();
+    }
+
+    /**
+     * Carrega as vozes disponíveis do navegador
+     * @private
+     */
+    _loadVoices() {
+        // Algumas browsers precisam de um evento para carregar vozes
+        if (this.speechSynth.getVoices().length > 0) {
+            this.voicesLoaded = true;
+        } else {
+            this.speechSynth.addEventListener('voiceschanged', () => {
+                this.voicesLoaded = true;
+                console.log('🎙️ Vozes carregadas:', this.speechSynth.getVoices().length);
+            });
+        }
     }
 
     /**
@@ -186,6 +205,142 @@ export class AudioManager {
             console.log('🎉 Som de vitória reproduzido');
         } catch (e) {
             console.warn('❌ Erro ao reproduzir som de vitória:', e);
+        }
+    }
+
+    /**
+     * Seleciona a melhor voz disponível
+     * Prioriza vozes do Google e Microsoft em português
+     * @private
+     */
+    _getBestVoice() {
+        const voices = this.speechSynth.getVoices();
+        
+        // Lista de vozes preferidas em ordem de qualidade
+        const preferredVoices = [
+            'Google português do Brasil',
+            'Google Português do Brasil',
+            'Microsoft Maria Online (Natural) - Portuguese (Brazil)',
+            'Microsoft Daniel - Portuguese (Brazil)',
+            'Luciana',
+            'Fernanda',
+            'Joana'
+        ];
+        
+        // Tenta encontrar uma voz preferida
+        for (const preferred of preferredVoices) {
+            const voice = voices.find(v => v.name.includes(preferred));
+            if (voice) {
+                console.log('🎙️ Voz selecionada:', voice.name);
+                return voice;
+            }
+        }
+        
+        // Fallback: qualquer voz em português brasileiro
+        const ptBRVoice = voices.find(v => v.lang === 'pt-BR');
+        if (ptBRVoice) {
+            console.log('🎙️ Voz PT-BR encontrada:', ptBRVoice.name);
+            return ptBRVoice;
+        }
+        
+        // Último fallback: qualquer voz em português
+        const ptVoice = voices.find(v => v.lang.startsWith('pt'));
+        if (ptVoice) {
+            console.log('🎙️ Voz PT encontrada:', ptVoice.name);
+            return ptVoice;
+        }
+        
+        console.warn('⚠️ Nenhuma voz em português encontrada, usando padrão');
+        return null;
+    }
+
+    /**
+     * Narrador falando durante o sorteio
+     * Frases engraçadas e animadas estilo apresentador de game show
+     */
+    playNarrator() {
+        if (!this.audioEnabled) return;
+        
+        try {
+            // Cancela qualquer fala anterior
+            if (this.speechSynth.speaking) {
+                this.speechSynth.cancel();
+            }
+            
+            // Frases divertidas do narrador (mais curtas e naturais)
+            const frases = [
+                "Quem será o sorteado?",
+                "Vamos ver quem é o sortudo!",
+                "A sorte está lançada!",
+                "Quem será o felizardo?",
+                "Preparados? Lá vamos nós!",
+                "Vamos descobrir o escolhido!",
+                "Momento de tensão!",
+                "Girando a roleta!",
+                "Cruze os dedos!",
+                "E agora... quem será?"
+            ];
+            
+            const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
+            
+            const utterance = new SpeechSynthesisUtterance(fraseEscolhida);
+            
+            // Configurações mais naturais
+            utterance.lang = 'pt-BR';
+            utterance.rate = 1.0;     // Velocidade normal (mais natural)
+            utterance.pitch = 1.0;    // Tom normal (menos robótico)
+            utterance.volume = 0.8;
+            
+            // Usa a melhor voz disponível
+            const bestVoice = this._getBestVoice();
+            if (bestVoice) {
+                utterance.voice = bestVoice;
+            }
+            
+            this.speechSynth.speak(utterance);
+            console.log('🎙️ Narrador:', fraseEscolhida);
+        } catch (e) {
+            console.warn('❌ Erro ao reproduzir narrador:', e);
+        }
+    }
+
+    /**
+     * Narrador anunciando o vencedor
+     * @param {string} name - Nome do vencedor
+     */
+    announceWinner(name) {
+        if (!this.audioEnabled) return;
+        
+        try {
+            // Aguarda um pouquinho antes de anunciar
+            setTimeout(() => {
+                const frases = [
+                    `E o vencedor é ${name}! Parabéns!`,
+                    `${name}, você foi sorteado! Parabéns!`,
+                    `Temos um vencedor! ${name}!`,
+                    `${name}! Você é o sortudo de hoje!`,
+                    `Parabéns ${name}, você ganhou!`
+                ];
+                
+                const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
+                
+                const utterance = new SpeechSynthesisUtterance(fraseEscolhida);
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.95;    // Um pouco mais devagar para clareza
+                utterance.pitch = 1.1;    // Levemente mais animado (menos exagerado)
+                utterance.volume = 0.9;
+                
+                // Usa a melhor voz disponível
+                const bestVoice = this._getBestVoice();
+                if (bestVoice) {
+                    utterance.voice = bestVoice;
+                }
+                
+                this.speechSynth.speak(utterance);
+                console.log('🎙️ Anunciando:', fraseEscolhida);
+            }, 500); // Pequeno delay dramático
+        } catch (e) {
+            console.warn('❌ Erro ao anunciar vencedor:', e);
         }
     }
 
