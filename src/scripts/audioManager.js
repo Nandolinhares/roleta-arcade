@@ -267,29 +267,29 @@ export class AudioManager {
                 this.speechSynth.cancel();
             }
             
-            // Frases divertidas do narrador (mais curtas e naturais)
+            // Frases empolgadas do narrador estilo game show (neutras)
             const frases = [
-                "Quem será o sorteado?",
-                "Vamos ver quem é o sortudo!",
-                "A sorte está lançada!",
-                "Quem será o felizardo?",
-                "Preparados? Lá vamos nós!",
-                "Vamos descobrir o escolhido!",
-                "Momento de tensão!",
-                "Girando a roleta!",
-                "Cruze os dedos!",
-                "E agora... quem será?"
+                "Atenção! Quem será a pessoa sorteada?!",
+                "Vamos ver quem é a grande sortuda!",
+                "A sorte está lançada! Quem será?!",
+                "É agora! Quem será a pessoa escolhida?!",
+                "Preparados?! Lá vamos nós!",
+                "Momento decisivo! Quem será?!",
+                "Muita atenção! Lá vai!",
+                "Girando a roleta da sorte!",
+                "Cruze os dedos! Que a sorte comece!",
+                "E agora... o grande momento!"
             ];
             
             const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
             
             const utterance = new SpeechSynthesisUtterance(fraseEscolhida);
             
-            // Configurações mais naturais
+            // Configurações de narrador animado/empolgado
             utterance.lang = 'pt-BR';
-            utterance.rate = 1.0;     // Velocidade normal (mais natural)
-            utterance.pitch = 1.0;    // Tom normal (menos robótico)
-            utterance.volume = 0.8;
+            utterance.rate = 1.2;     // Mais rápido = mais empolgado
+            utterance.pitch = 1.15;   // Tom um pouco mais alto = mais energia
+            utterance.volume = 0.9;   // Volume alto
             
             // Usa a melhor voz disponível
             const bestVoice = this._getBestVoice();
@@ -315,20 +315,20 @@ export class AudioManager {
             // Aguarda um pouquinho antes de anunciar
             setTimeout(() => {
                 const frases = [
-                    `E o vencedor é ${name}! Parabéns!`,
-                    `${name}, você foi sorteado! Parabéns!`,
-                    `Temos um vencedor! ${name}!`,
-                    `${name}! Você é o sortudo de hoje!`,
-                    `Parabéns ${name}, você ganhou!`
+                    `E a pessoa sorteada é... ${name}! Parabéns!`,
+                    `${name}! Você foi a pessoa sorteada! Muitos parabéns!`,
+                    `Temos uma pessoa vencedora! É ${name}! Que sorte incrível!`,
+                    `${name}! Você é a grande pessoa sortuda de hoje! Parabéns!`,
+                    `Incrível! ${name} ganhou! Muitas felicidades!`
                 ];
                 
                 const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
                 
                 const utterance = new SpeechSynthesisUtterance(fraseEscolhida);
                 utterance.lang = 'pt-BR';
-                utterance.rate = 0.95;    // Um pouco mais devagar para clareza
-                utterance.pitch = 1.1;    // Levemente mais animado (menos exagerado)
-                utterance.volume = 0.9;
+                utterance.rate = 1.15;    // Rápido e empolgante
+                utterance.pitch = 1.25;   // Tom mais alto = mais celebração!
+                utterance.volume = 1.0;   // Volume máximo para o anúncio
                 
                 // Usa a melhor voz disponível
                 const bestVoice = this._getBestVoice();
